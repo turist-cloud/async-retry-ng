@@ -23,13 +23,15 @@
     ]
   },
   "eslintConfig": {
+    "plugins": ["jest"],
     "extends": [
+      "plugin:jest/recommended",
       "airbnb",
       "prettier"
     ],
     "rules": {
-      "no-var": 0,
-      "prefer-arrow-callback": 0
+      "prefer-arrow-callback": 0,
+      "no-underscore-dangle": 0
     }
   },
   "devDependencies": {
@@ -37,6 +39,7 @@
     "eslint-config-airbnb": "18.0.1",
     "eslint-config-prettier": "6.7.0",
     "eslint-plugin-import": "2.19.1",
+    "eslint-plugin-jest": "23.1.1",
     "eslint-plugin-jsx-a11y": "6.2.3",
     "eslint-plugin-react": "7.14.3",
     "eslint-plugin-react-hooks": "1.7.0",

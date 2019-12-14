@@ -12,7 +12,7 @@ test("testDefaultValues", () => {
 test("testDefaultValuesWithRandomize", () => {
   const minTimeout = 5000;
   const timeouts = retry.timeouts({
-    minTimeout: minTimeout,
+    minTimeout,
     randomize: true
   });
 
@@ -34,11 +34,11 @@ test("testTimeoutsAreWithinBoundaries", () => {
   const minTimeout = 1000;
   const maxTimeout = 10000;
   const timeouts = retry.timeouts({
-    minTimeout: minTimeout,
-    maxTimeout: maxTimeout
+    minTimeout,
+    maxTimeout
   });
 
-  for (var i = 0; i < timeouts; i++) {
+  for (let i = 0; i < timeouts; i++) {
     expect(timeouts[i]).toBeGreaterThanOrEqual(minTimeout);
     expect(timeouts[i]).toBeLessThanOrEqual(maxTimeout);
   }

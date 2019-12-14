@@ -1,39 +1,41 @@
 const retry = require("../lib/retry");
 
-test("testReset", done => {
-  const error = new Error("some error");
-  const operation = retry.operation([1, 2, 3]);
-  let attempts = 0;
+test("testReset", () => {
+  return new Promise(done => {
+    const error = new Error("some error");
+    const operation = retry.operation([1, 2, 3]);
+    let attempts = 0;
 
-  var expectedFinishes = 1;
-  var finishes = 0;
+    let expectedFinishes = 1;
+    let finishes = 0;
 
-  var fn = function() {
-    operation.attempt(function(currentAttempt) {
-      attempts++;
-      expect(currentAttempt).toBe(attempts);
-      if (operation.retry(error)) {
-        return;
-      }
+    const fn = function() {
+      operation.attempt(function(currentAttempt) {
+        attempts++;
+        expect(currentAttempt).toBe(attempts);
+        if (operation.retry(error)) {
+          return;
+        }
 
-      finishes++;
-      expect(expectedFinishes).toBe(finishes);
-      expect(attempts).toBe(4);
-      expect(operation.attempts()).toBe(attempts);
-      expect(operation.mainError()).toBe(error);
+        finishes++;
+        expect(expectedFinishes).toBe(finishes);
+        expect(attempts).toBe(4);
+        expect(operation.attempts()).toBe(attempts);
+        expect(operation.mainError()).toBe(error);
 
-      if (finishes < 2) {
-        attempts = 0;
-        expectedFinishes++;
-        operation.reset();
-        fn();
-      } else {
-        done();
-      }
-    });
-  };
+        if (finishes < 2) {
+          attempts = 0;
+          expectedFinishes++;
+          operation.reset();
+          fn();
+        } else {
+          done();
+        }
+      });
+    };
 
-  fn();
+    fn();
+  });
 });
 
 test("testError", () => {
@@ -77,7 +79,7 @@ test("testAttempt", () => {
 
   const timeoutOpts = {
     timeout: 1,
-    cb: function() {}
+    cb() {}
   };
   operation.attempt(fn, timeoutOpts);
 
@@ -86,114 +88,121 @@ test("testAttempt", () => {
   expect(timeoutOpts.cb).toBe(operation._operationTimeoutCb);
 });
 
-test("testRetry", done => {
-  const error = new Error("some error");
-  const operation = retry.operation([1, 2, 3]);
-  let attempts = 0;
+test("testRetry", () => {
+  return new Promise(done => {
+    const error = new Error("some error");
+    const operation = retry.operation([1, 2, 3]);
+    let attempts = 0;
 
-  const fn = function() {
-    operation.attempt(function(currentAttempt) {
-      attempts++;
-      expect(currentAttempt).toBe(attempts);
-      if (operation.retry(error)) {
-        return;
-      }
+    const fn = function() {
+      operation.attempt(function(currentAttempt) {
+        attempts++;
+        expect(currentAttempt).toBe(attempts);
+        if (operation.retry(error)) {
+          return;
+        }
 
-      expect(attempts).toBe(4);
-      expect(operation.attempts()).toBe(attempts);
-      expect(operation.mainError()).toBe(error);
-      done();
-    });
-  };
-
-  fn();
-});
-
-test("testRetryForever", done => {
-  const error = new Error("some error");
-  const operation = retry.operation({ retries: 3, forever: true });
-  let attempts = 0;
-
-  const fn = function() {
-    operation.attempt(function(currentAttempt) {
-      attempts++;
-      expect(currentAttempt).toBe(attempts);
-      if (attempts !== 6 && operation.retry(error)) {
-        return;
-      }
-
-      expect(attempts).toBe(6);
-      expect(operation.attempts()).toBe(attempts);
-      expect(operation.mainError()).toBe(error);
-      done();
-    });
-  };
-
-  fn();
-});
-
-test("testRetryForeverNoRetries", done => {
-  const error = new Error("some error");
-  const delay = 50;
-  const operation = retry.operation({
-    retries: null,
-    forever: true,
-    minTimeout: delay,
-    maxTimeout: delay
-  });
-
-  let attempts = 0;
-  const startTime = new Date().getTime();
-
-  const fn = function() {
-    operation.attempt(function(currentAttempt) {
-      attempts++;
-      expect(currentAttempt).toBe(attempts);
-      if (attempts !== 4 && operation.retry(error)) {
-        return;
-      }
-
-      var endTime = new Date().getTime();
-      var minTime = startTime + delay * 3;
-      var maxTime = minTime + 20; // add a little headroom for code execution time
-      expect(endTime).toBeGreaterThanOrEqual(minTime);
-      expect(endTime).toBeLessThan(maxTime);
-      expect(attempts).toBe(4);
-      expect(operation.attempts()).toBe(attempts);
-      expect(operation.mainError()).toBe(error);
-      done();
-    });
-  };
-
-  fn();
-});
-
-test("testStop", done => {
-  const error = new Error("some error");
-  const operation = retry.operation([1, 2, 3]);
-  let attempts = 0;
-
-  const fn = function() {
-    operation.attempt(function(currentAttempt) {
-      attempts++;
-      expect(currentAttempt).toBe(attempts);
-
-      if (attempts === 2) {
-        operation.stop();
-
-        expect(attempts).toBe(2);
+        expect(attempts).toBe(4);
         expect(operation.attempts()).toBe(attempts);
         expect(operation.mainError()).toBe(error);
         done();
-      }
+      });
+    };
 
-      if (operation.retry(error)) {
-        return;
-      }
+    fn();
+  });
+});
+
+test("testRetryForever", () => {
+  return new Promise(done => {
+    const error = new Error("some error");
+    const operation = retry.operation({ retries: 3, forever: true });
+    let attempts = 0;
+
+    const fn = function() {
+      operation.attempt(function(currentAttempt) {
+        attempts++;
+        expect(currentAttempt).toBe(attempts);
+        if (attempts !== 6 && operation.retry(error)) {
+          return;
+        }
+
+        expect(attempts).toBe(6);
+        expect(operation.attempts()).toBe(attempts);
+        expect(operation.mainError()).toBe(error);
+        done();
+      });
+    };
+
+    fn();
+  });
+});
+
+test("testRetryForeverNoRetries", () => {
+  return new Promise(done => {
+    const error = new Error("some error");
+    const delay = 50;
+    const operation = retry.operation({
+      retries: null,
+      forever: true,
+      minTimeout: delay,
+      maxTimeout: delay
     });
-  };
 
-  fn();
+    let attempts = 0;
+    const startTime = new Date().getTime();
+
+    const fn = function() {
+      operation.attempt(function(currentAttempt) {
+        attempts++;
+        expect(currentAttempt).toBe(attempts);
+        if (attempts !== 4 && operation.retry(error)) {
+          return;
+        }
+
+        const endTime = new Date().getTime();
+        const minTime = startTime + delay * 3;
+        const maxTime = minTime + 20; // add a little headroom for code execution time
+        expect(endTime).toBeGreaterThanOrEqual(minTime);
+        expect(endTime).toBeLessThan(maxTime);
+        expect(attempts).toBe(4);
+        expect(operation.attempts()).toBe(attempts);
+        expect(operation.mainError()).toBe(error);
+        done();
+      });
+    };
+
+    fn();
+  });
+});
+
+test("testStop", () => {
+  return new Promise(done => {
+    const error = new Error("some error");
+    const operation = retry.operation([1, 2, 3]);
+    let attempts = 0;
+
+    const fn = function() {
+      operation.attempt(function(currentAttempt) {
+        attempts++;
+        expect(currentAttempt).toBe(attempts);
+
+        if (attempts === 2) {
+          operation.stop();
+
+          expect(attempts).toBe(2);
+          expect(operation.attempts()).toBe(attempts);
+          expect(operation.mainError()).toBe(error);
+          done();
+        }
+
+        if (operation.retry(error)) {
+        }
+      });
+    };
+
+    fn();
+  });
 });
 
 test("testMaxRetryTime", () => {
@@ -201,7 +210,7 @@ test("testMaxRetryTime", () => {
   const maxRetryTime = 30;
   const operation = retry.operation({
     minTimeout: 1,
-    maxRetryTime: maxRetryTime
+    maxRetryTime
   });
   let attempts = 0;
 
@@ -217,7 +226,6 @@ test("testMaxRetryTime", () => {
 
       if (attempts !== 2) {
         if (operation.retry(error)) {
-          return;
         }
       } else {
         const curTime = new Date().getTime();

@@ -68,7 +68,7 @@ test("bail + return", async () => {
   expect(error.message).toBe("woot");
 });
 
-test("bail error", async t => {
+test("bail error", async () => {
   let retries = 0;
 
   try {
@@ -86,7 +86,7 @@ test("bail error", async t => {
     expect(err.message).toBe("Wont retry");
   }
 
-  t.deepEqual(retries, 1);
+  expect(retries).toBe(1);
 });
 
 test("with non-async functions", async () => {

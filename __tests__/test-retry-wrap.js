@@ -2,9 +2,9 @@ const retry = require("../lib/retry");
 
 function getLib() {
   return {
-    fn1: function() {},
-    fn2: function() {},
-    fn3: function() {}
+    fn1() {},
+    fn2() {},
+    fn3() {}
   };
 }
 
@@ -56,7 +56,7 @@ test("wrapDefinedAndPassOptions", () => {
 test("runWrappedWithoutError", () => {
   let callbackCalled;
   const lib = {
-    method: function(a, b, callback) {
+    method(a, b, callback) {
       expect(a).toBe(1);
       expect(b).toBe(2);
       expect(typeof callback).toBe("function");
@@ -73,12 +73,12 @@ test("runWrappedWithoutError", () => {
 test("runWrappedSeveralWithoutError", () => {
   let callbacksCalled = 0;
   const lib = {
-    fn1: function(a, callback) {
+    fn1(a, callback) {
       expect(a).toBe(1);
       expect(typeof callback).toBe("function");
       callback();
     },
-    fn2: function(a, callback) {
+    fn2(a, callback) {
       expect(a).toBe(2);
       expect(typeof callback).toBe("function");
       callback();
@@ -97,7 +97,7 @@ test("runWrappedSeveralWithoutError", () => {
 test("runWrappedWithError", () => {
   let callbackCalled;
   const lib = {
-    method: function(callback) {
+    method(callback) {
       callback(new Error("Some error"));
     }
   };
