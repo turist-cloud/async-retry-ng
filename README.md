@@ -1,4 +1,4 @@
-# async-retry
+# async-retry-ng
 
 [![Code Style](https://badgen.net/badge/code%20style/airbnb/fd5c63)](https://github.com/airbnb/javascript)
 
