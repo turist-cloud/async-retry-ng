@@ -242,3 +242,33 @@ test("testMaxRetryTime", () => {
     });
   });
 });
+
+test('testErrorsPreservedWhenMaxRetryTimeExceeded', () => {
+  const error = new Error('some error');
+  const maxRetryTime = 30;
+  const operation = retry.operation({
+      minTimeout: 1,
+      maxRetryTime: maxRetryTime
+  });
+
+  const longAsyncFunction = function (wait, callback){
+    setTimeout(callback, wait);
+  };
+
+  return new Promise((resolve, reject) => {
+    const startTime = new Date().getTime();
+    operation.attempt(function() {
+
+      const curTime = new Date().getTime();
+      longAsyncFunction(maxRetryTime - (curTime - startTime - 1), function(){
+        if (operation.retry(error)) {
+          reject(new Error('timeout should be occurred'));
+          return;
+        }
+
+        expect(operation.mainError()).toBe(error);
+        resolve();
+      });
+    });
+  });
+});
