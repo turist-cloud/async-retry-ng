@@ -13,7 +13,7 @@
     "lib"
   ],
   "license": "MIT",
-  "repository": "olliv/async-retry-ng",
+  "repository": "turist-cloud/async-retry-ng",
   "pre-commit": "lint:staged",
   "lint-staged": {
     "*.js": [
