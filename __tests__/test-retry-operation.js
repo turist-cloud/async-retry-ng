@@ -1,7 +1,7 @@
 const retry = require("../lib/retry");
 
 test("testReset", () => {
-  return new Promise(done => {
+  return new Promise((done) => {
     const error = new Error("some error");
     const operation = retry.operation([1, 2, 3]);
     let attempts = 0;
@@ -9,8 +9,8 @@ test("testReset", () => {
     let expectedFinishes = 1;
     let finishes = 0;
 
-    const fn = function() {
-      operation.attempt(function(currentAttempt) {
+    const fn = function () {
+      operation.attempt(function (currentAttempt) {
         attempts++;
         expect(currentAttempt).toBe(attempts);
         if (operation.retry(error)) {
@@ -79,7 +79,7 @@ test("testAttempt", () => {
 
   const timeoutOpts = {
     timeout: 1,
-    cb() {}
+    cb() {},
   };
   operation.attempt(fn, timeoutOpts);
 
@@ -89,13 +89,13 @@ test("testAttempt", () => {
 });
 
 test("testRetry", () => {
-  return new Promise(done => {
+  return new Promise((done) => {
     const error = new Error("some error");
     const operation = retry.operation([1, 2, 3]);
     let attempts = 0;
 
-    const fn = function() {
-      operation.attempt(function(currentAttempt) {
+    const fn = function () {
+      operation.attempt(function (currentAttempt) {
         attempts++;
         expect(currentAttempt).toBe(attempts);
         if (operation.retry(error)) {
@@ -114,13 +114,13 @@ test("testRetry", () => {
 });
 
 test("testRetryForever", () => {
-  return new Promise(done => {
+  return new Promise((done) => {
     const error = new Error("some error");
     const operation = retry.operation({ retries: 3, forever: true });
     let attempts = 0;
 
-    const fn = function() {
-      operation.attempt(function(currentAttempt) {
+    const fn = function () {
+      operation.attempt(function (currentAttempt) {
         attempts++;
         expect(currentAttempt).toBe(attempts);
         if (attempts !== 6 && operation.retry(error)) {
@@ -139,21 +139,21 @@ test("testRetryForever", () => {
 });
 
 test("testRetryForeverNoRetries", () => {
-  return new Promise(done => {
+  return new Promise((done) => {
     const error = new Error("some error");
     const delay = 50;
     const operation = retry.operation({
       retries: null,
       forever: true,
       minTimeout: delay,
-      maxTimeout: delay
+      maxTimeout: delay,
     });
 
     let attempts = 0;
     const startTime = new Date().getTime();
 
-    const fn = function() {
-      operation.attempt(function(currentAttempt) {
+    const fn = function () {
+      operation.attempt(function (currentAttempt) {
         attempts++;
         expect(currentAttempt).toBe(attempts);
         if (attempts !== 4 && operation.retry(error)) {
@@ -177,13 +177,13 @@ test("testRetryForeverNoRetries", () => {
 });
 
 test("testStop", () => {
-  return new Promise(done => {
+  return new Promise((done) => {
     const error = new Error("some error");
     const operation = retry.operation([1, 2, 3]);
     let attempts = 0;
 
-    const fn = function() {
-      operation.attempt(function(currentAttempt) {
+    const fn = function () {
+      operation.attempt(function (currentAttempt) {
         attempts++;
         expect(currentAttempt).toBe(attempts);
 
@@ -210,17 +210,17 @@ test("testMaxRetryTime", () => {
   const maxRetryTime = 30;
   const operation = retry.operation({
     minTimeout: 1,
-    maxRetryTime
+    maxRetryTime,
   });
   let attempts = 0;
 
-  const longAsyncFunction = function(wait, callback) {
+  const longAsyncFunction = function (wait, callback) {
     setTimeout(callback, wait);
   };
 
   return new Promise((resolve, reject) => {
     const startTime = new Date().getTime();
-    operation.attempt(function(currentAttempt) {
+    operation.attempt(function (currentAttempt) {
       attempts++;
       expect(currentAttempt).toBe(attempts);
 
@@ -229,40 +229,42 @@ test("testMaxRetryTime", () => {
         }
       } else {
         const curTime = new Date().getTime();
-        longAsyncFunction(maxRetryTime - (curTime - startTime - 1), function() {
-          if (operation.retry(error)) {
-            reject(new Error("timeout should be occurred"));
-            return;
-          }
+        longAsyncFunction(
+          maxRetryTime - (curTime - startTime - 1),
+          function () {
+            if (operation.retry(error)) {
+              reject(new Error("timeout should be occurred"));
+              return;
+            }
 
-          expect(operation.mainError()).toBe(error);
-          resolve();
-        });
+            expect(operation.mainError()).toBe(error);
+            resolve();
+          }
+        );
       }
     });
   });
 });
 
-test('testErrorsPreservedWhenMaxRetryTimeExceeded', () => {
-  const error = new Error('some error');
+test("testErrorsPreservedWhenMaxRetryTimeExceeded", () => {
+  const error = new Error("some error");
   const maxRetryTime = 30;
   const operation = retry.operation({
-      minTimeout: 1,
-      maxRetryTime: maxRetryTime
+    minTimeout: 1,
+    maxRetryTime: maxRetryTime,
   });
 
-  const longAsyncFunction = function (wait, callback){
+  const longAsyncFunction = function (wait, callback) {
     setTimeout(callback, wait);
   };
 
   return new Promise((resolve, reject) => {
     const startTime = new Date().getTime();
-    operation.attempt(function() {
-
+    operation.attempt(function () {
       const curTime = new Date().getTime();
-      longAsyncFunction(maxRetryTime - (curTime - startTime - 1), function(){
+      longAsyncFunction(maxRetryTime - (curTime - startTime - 1), function () {
         if (operation.retry(error)) {
-          reject(new Error('timeout should be occurred'));
+          reject(new Error("timeout should be occurred"));
           return;
         }
 

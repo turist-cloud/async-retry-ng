@@ -55,7 +55,7 @@ test("bail + return", async () => {
 
   try {
     await Promise.resolve(
-      retry(async bail => {
+      retry(async (bail) => {
         await sleep(200);
         await sleep(200);
         bail(new Error("woot"));
@@ -121,7 +121,7 @@ test("with number of retries", async () => {
         }
 
         retries = i;
-      }
+      },
     });
   } catch (err) {
     expect(retries).toBe(2);

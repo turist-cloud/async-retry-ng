@@ -4,7 +4,7 @@ function getLib() {
   return {
     fn1() {},
     fn2() {},
-    fn3() {}
+    fn3() {},
   };
 }
 
@@ -61,10 +61,10 @@ test("runWrappedWithoutError", () => {
       expect(b).toBe(2);
       expect(typeof callback).toBe("function");
       callback();
-    }
+    },
   };
   retry.wrap(lib);
-  lib.method(1, 2, function() {
+  lib.method(1, 2, function () {
     callbackCalled = true;
   });
   expect(callbackCalled).toBeTruthy();
@@ -82,13 +82,13 @@ test("runWrappedSeveralWithoutError", () => {
       expect(a).toBe(2);
       expect(typeof callback).toBe("function");
       callback();
-    }
+    },
   };
   retry.wrap(lib, {}, ["fn1", "fn2"]);
-  lib.fn1(1, function() {
+  lib.fn1(1, function () {
     callbacksCalled++;
   });
-  lib.fn2(2, function() {
+  lib.fn2(2, function () {
     callbacksCalled++;
   });
   expect(callbacksCalled).toBe(2);
@@ -99,10 +99,10 @@ test("runWrappedWithError", () => {
   const lib = {
     method(callback) {
       callback(new Error("Some error"));
-    }
+    },
   };
   retry.wrap(lib, { retries: 1 });
-  lib.method(function(err) {
+  lib.method(function (err) {
     callbackCalled = true;
     expect(err instanceof Error).toBeTruthy();
   });

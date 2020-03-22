@@ -13,7 +13,7 @@ test("testDefaultValuesWithRandomize", () => {
   const minTimeout = 5000;
   const timeouts = retry.timeouts({
     minTimeout,
-    randomize: true
+    randomize: true,
   });
 
   expect(timeouts.length).toBe(10);
@@ -35,7 +35,7 @@ test("testTimeoutsAreWithinBoundaries", () => {
   const maxTimeout = 10000;
   const timeouts = retry.timeouts({
     minTimeout,
-    maxTimeout
+    maxTimeout,
   });
 
   for (let i = 0; i < timeouts; i++) {
@@ -57,7 +57,7 @@ test("testTimeoutsAreIncremental", () => {
 test("testTimeoutsAreIncrementalForFactorsLessThanOne", () => {
   const timeouts = retry.timeouts({
     retries: 3,
-    factor: 0.5
+    factor: 0.5,
   });
   const expected = [250, 500, 1000];
 
