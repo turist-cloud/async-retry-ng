@@ -1,6 +1,6 @@
-const retry = require("../lib/retry");
+const retry = require('../lib/retry');
 
-test("testDefaultValues", () => {
+test('testDefaultValues', () => {
   const timeouts = retry.timeouts();
 
   expect(timeouts.length).toBe(10);
@@ -9,11 +9,11 @@ test("testDefaultValues", () => {
   expect(timeouts[2]).toBe(4000);
 });
 
-test("testDefaultValuesWithRandomize", () => {
+test('testDefaultValuesWithRandomize', () => {
   const minTimeout = 5000;
   const timeouts = retry.timeouts({
     minTimeout,
-    randomize: true
+    randomize: true,
   });
 
   expect(timeouts.length).toBe(10);
@@ -22,7 +22,7 @@ test("testDefaultValuesWithRandomize", () => {
   expect(timeouts[2]).toBeGreaterThan(timeouts[1]);
 });
 
-test("testPassedTimeoutsAreUsed", () => {
+test('testPassedTimeoutsAreUsed', () => {
   const timeoutsArray = [1000, 2000, 3000];
   const timeouts = retry.timeouts(timeoutsArray);
 
@@ -30,12 +30,12 @@ test("testPassedTimeoutsAreUsed", () => {
   expect(timeouts).not.toBe(timeoutsArray);
 });
 
-test("testTimeoutsAreWithinBoundaries", () => {
+test('testTimeoutsAreWithinBoundaries', () => {
   const minTimeout = 1000;
   const maxTimeout = 10000;
   const timeouts = retry.timeouts({
     minTimeout,
-    maxTimeout
+    maxTimeout,
   });
 
   for (let i = 0; i < timeouts; i++) {
@@ -44,27 +44,29 @@ test("testTimeoutsAreWithinBoundaries", () => {
   }
 });
 
-test("testTimeoutsAreIncremental", () => {
+test('testTimeoutsAreIncremental', () => {
   const timeouts = retry.timeouts();
-  const lastTimeout = timeouts[0];
+  let lastTimeout = timeouts[0];
 
-  for (let i = 0; i < timeouts; i++) {
-    assert(timeouts[i]).toBeGreaterThan(lastTimeout);
-    lastTimeout = timeouts[i];
+  expect(timeouts.length).toBeGreaterThan(0);
+
+  for (const tOut of timeouts) {
+    expect(tOut).toBeGreaterThanOrEqual(lastTimeout);
+    lastTimeout = tOut;
   }
 });
 
-test("testTimeoutsAreIncrementalForFactorsLessThanOne", () => {
+test('testTimeoutsAreIncrementalForFactorsLessThanOne', () => {
   const timeouts = retry.timeouts({
     retries: 3,
-    factor: 0.5
+    factor: 0.5,
   });
   const expected = [250, 500, 1000];
 
   expect(expected).toEqual(timeouts);
 });
 
-test("testRetries", () => {
+test('testRetries', () => {
   const timeouts = retry.timeouts({ retries: 2 });
 
   expect(timeouts).toHaveLength(2);
