@@ -19,8 +19,7 @@
   "lint-staged": {
     "*.js": [
       "eslint",
-      "prettier --write --single-quote",
-      "git add"
+      "prettier --write --single-quote"
     ]
   },
   "eslintConfig": {
