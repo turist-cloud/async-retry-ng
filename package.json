@@ -33,8 +33,12 @@
       "prettier"
     ],
     "rules": {
-      "prefer-arrow-callback": 0,
-      "no-underscore-dangle": 0
+      "no-param-reassign" : 0,
+      "no-plusplus": 0,
+      "no-restricted-properties": 0,
+      "no-restricted-syntax": 0,
+      "no-underscore-dangle": 0,
+      "prefer-arrow-callback": 0
     }
   },
   "devDependencies": {
