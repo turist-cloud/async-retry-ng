@@ -251,7 +251,7 @@ test("testErrorsPreservedWhenMaxRetryTimeExceeded", () => {
   const maxRetryTime = 30;
   const operation = retry.operation({
     minTimeout: 1,
-    maxRetryTime: maxRetryTime,
+    maxRetryTime,
   });
 
   const longAsyncFunction = function (wait, callback) {
