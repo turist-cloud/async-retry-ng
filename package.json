@@ -7,7 +7,8 @@
     "test": "yarn run test-lint && yarn run test-unit",
     "test-lint": "eslint .",
     "test-unit": "jest --testTimeout 20000",
-    "lint:staged": "lint-staged"
+    "lint:staged": "lint-staged",
+    "prettier": "prettier --write './{src,__tests__}/**/*.js'"
   },
   "files": [
     "lib"
@@ -23,7 +24,9 @@
     ]
   },
   "eslintConfig": {
-    "plugins": ["jest"],
+    "plugins": [
+      "jest"
+    ],
     "extends": [
       "plugin:jest/recommended",
       "airbnb",
@@ -35,19 +38,19 @@
     }
   },
   "devDependencies": {
-    "eslint": "6.7.2",
-    "eslint-config-airbnb": "18.0.1",
-    "eslint-config-prettier": "6.7.0",
-    "eslint-plugin-import": "2.19.1",
-    "eslint-plugin-jest": "23.1.1",
+    "eslint": "6.8.0",
+    "eslint-config-airbnb": "18.1.0",
+    "eslint-config-prettier": "6.10.1",
+    "eslint-plugin-import": "2.20.1",
+    "eslint-plugin-jest": "23.8.2",
     "eslint-plugin-jsx-a11y": "6.2.3",
-    "eslint-plugin-react": "7.14.3",
-    "eslint-plugin-react-hooks": "1.7.0",
-    "jest": "24.9.0",
-    "lint-staged": "9.5.0",
+    "eslint-plugin-react": "7.19.0",
+    "eslint-plugin-react-hooks": "2.5.1",
+    "jest": "25.1.0",
+    "lint-staged": "10.0.8",
     "node-fetch": "2.6.0",
     "pre-commit": "1.2.2",
-    "prettier": "1.19.1",
+    "prettier": "2.0.1",
     "then-sleep": "1.0.1"
   }
 }
