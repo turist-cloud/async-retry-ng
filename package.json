@@ -1,6 +1,6 @@
 {
   "name": "async-retry-ng",
-  "version": "2.0.0",
+  "version": "2.0.1",
   "description": "Retrying made simple, easy and async",
   "main": "./lib/index.js",
   "scripts": {
