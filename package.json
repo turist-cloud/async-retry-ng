@@ -51,7 +51,7 @@
     "eslint-plugin-react-hooks": "2.5.1",
     "jest": "25.1.0",
     "lint-staged": "10.0.8",
-    "node-fetch": "2.6.0",
+    "node-fetch": "2.6.1",
     "pre-commit": "1.2.2",
     "prettier": "2.0.1",
     "then-sleep": "1.0.1"
