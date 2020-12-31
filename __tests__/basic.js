@@ -33,8 +33,8 @@ test('chained promise', async () => {
   expect(res.status).toBe(200);
 });
 
-test('bail', () => {
-  return expect(
+test('bail', () =>
+  expect(
     retry(
       async (bail, num) => {
         if (num === 2) {
@@ -45,8 +45,7 @@ test('bail', () => {
       },
       { retries: 3 }
     )
-  ).rejects.toThrow('Wont retry');
-});
+  ).rejects.toThrow('Wont retry'));
 
 test('bail + return', async () => {
   let error;
@@ -85,16 +84,15 @@ test('bail error', async () => {
   expect(retries).toBe(1);
 });
 
-test('with non-async functions', () => {
-  return expect(
+test('with non-async functions', () =>
+  expect(
     retry(
       (bail, num) => {
         throw new Error(`Test ${num}`);
       },
       { retries: 2 }
     )
-  ).rejects.toThrow('Test 3');
-});
+  ).rejects.toThrow('Test 3'));
 
 test('return non-async', async () => {
   const val = await retry(() => 5);
@@ -107,9 +105,7 @@ test('with number of retries', async () => {
 
   await expect(
     retry(
-      () => {
-        return new Promise((_, reject) => setTimeout(reject(new Error()), 10));
-      },
+      () => new Promise((_, reject) => setTimeout(reject(new Error()), 10)),
       {
         retries: 2,
         onRetry: (_err, i) => {

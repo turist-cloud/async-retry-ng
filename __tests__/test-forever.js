@@ -1,7 +1,7 @@
 const retry = require('../lib/retry');
 
-test('testForeverUsesFirstTimeout', () => {
-  return new Promise((done) => {
+test('testForeverUsesFirstTimeout', () =>
+  new Promise((done) => {
     const operation = retry.operation({
       retries: 0,
       minTimeout: 100,
@@ -18,5 +18,4 @@ test('testForeverUsesFirstTimeout', () => {
 
       operation.retry(err);
     });
-  });
-});
+  }));

@@ -1,7 +1,7 @@
 const retry = require('../lib/retry');
 
-test('testReset', () => {
-  return new Promise((done) => {
+test('testReset', () =>
+  new Promise((done) => {
     const error = new Error('some error');
     const operation = retry.operation([1, 2, 3]);
     let attempts = 0;
@@ -35,8 +35,7 @@ test('testReset', () => {
     };
 
     fn();
-  });
-});
+  }));
 
 test('testError', () => {
   const operation = retry.operation();
@@ -89,8 +88,8 @@ test('testAttempt', () => {
   expect(timeoutOpts.cb).toBe(operation._operationTimeoutCb);
 });
 
-test('testRetry', () => {
-  return new Promise((done) => {
+test('testRetry', () =>
+  new Promise((done) => {
     const error = new Error('some error');
     const operation = retry.operation([1, 2, 3]);
     let attempts = 0;
@@ -111,11 +110,10 @@ test('testRetry', () => {
     };
 
     fn();
-  });
-});
+  }));
 
-test('testRetryForever', () => {
-  return new Promise((done) => {
+test('testRetryForever', () =>
+  new Promise((done) => {
     const error = new Error('some error');
     const operation = retry.operation({ retries: 3, forever: true });
     let attempts = 0;
@@ -136,11 +134,10 @@ test('testRetryForever', () => {
     };
 
     fn();
-  });
-});
+  }));
 
-test('testRetryForeverNoRetries', () => {
-  return new Promise((done) => {
+test('testRetryForeverNoRetries', () =>
+  new Promise((done) => {
     const error = new Error('some error');
     const delay = 10;
     const operation = retry.operation({
@@ -174,11 +171,10 @@ test('testRetryForeverNoRetries', () => {
     };
 
     fn();
-  });
-});
+  }));
 
-test('testStop', () => {
-  return new Promise((done) => {
+test('testStop', () =>
+  new Promise((done) => {
     const error = new Error('some error');
     const operation = retry.operation([1, 2, 3]);
     let attempts = 0;
@@ -190,7 +186,6 @@ test('testStop', () => {
 
         if (attempts === 2) {
           operation.stop();
-
           expect(attempts).toBe(2);
           expect(operation.attempts()).toBe(attempts);
           expect(operation.mainError()).toBe(error);
@@ -202,8 +197,7 @@ test('testStop', () => {
     };
 
     fn();
-  });
-});
+  }));
 
 test('testMaxRetryTime', () => {
   const error = new Error('some error');
