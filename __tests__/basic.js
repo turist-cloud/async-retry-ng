@@ -43,8 +43,8 @@ test('bail', () =>
 
         throw new Error(`Test ${num}`);
       },
-      { retries: 3 }
-    )
+      { retries: 3 },
+    ),
   ).rejects.toThrow('Wont retry'));
 
 test('bail + return', async () => {
@@ -56,7 +56,7 @@ test('bail + return', async () => {
         await sleep(200);
         await sleep(200);
         bail(new Error('woot'));
-      })
+      }),
     );
   } catch (err) {
     error = err;
@@ -77,8 +77,8 @@ test('bail error', async () => {
         err.bail = true;
         throw err;
       },
-      { retries: 3 }
-    )
+      { retries: 3 },
+    ),
   ).rejects.toThrow('Wont retry');
 
   expect(retries).toBe(1);
@@ -90,8 +90,8 @@ test('with non-async functions', () =>
       (bail, num) => {
         throw new Error(`Test ${num}`);
       },
-      { retries: 2 }
-    )
+      { retries: 2 },
+    ),
   ).rejects.toThrow('Test 3'));
 
 test('return non-async', async () => {
@@ -111,8 +111,8 @@ test('with number of retries', async () => {
         onRetry: (_err, i) => {
           retries = i;
         },
-      }
-    )
+      },
+    ),
   ).rejects.toThrow();
 
   expect(retries).toBe(2);
